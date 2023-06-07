@@ -1,2 +1,2 @@
 #!/bin/bash
-cat \n
+ls -a \n
