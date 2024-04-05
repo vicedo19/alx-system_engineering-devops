@@ -3,4 +3,4 @@
 
 config_file = "/etc/nginx/sites-available/default"
 sudo sed -i '/listen 80 default-server;/c\	listen 80 default-server;' $config_file
-sudo service restart nginx
+sudo service nginx restart
