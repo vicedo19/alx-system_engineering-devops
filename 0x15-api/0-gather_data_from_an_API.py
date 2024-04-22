@@ -2,37 +2,27 @@
 """
 Gather data from an API
 """
-
 from requests import get
-import sys
+from sys import argv
 
 
-def fetch_todo_list_progress(employee_id):
-    url = get(f"https://jsonplaceholder.typicode.com/users/{employee_id}")
-    res = url.json()
-    name = res['name']
+if __name__ == '__main__':
+    user_id = argv[1]
+    url = 'https://jsonplaceholder.typicode.com/users/{}'.format(user_id)
+    response = get(url)
+    name = response.json().get('name')
 
-    url = (f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}")
-    task_res = get(url)
-    tasks = task_res.json()
-
-    total_tasks = len(tasks)
-    done_tasks = []
+    url = 'https://jsonplaceholder.typicode.com/users/{}/todos'.format(user_id)
+    response = get(url)
+    tasks = response.json()
     done = 0
+    done_tasks = []
     for task in tasks:
         if task.get('completed'):
             done_tasks.append(task)
             done += 1
 
-    print(f"Employee {name} is done with tasks ({done_tasks}/{total_tasks}):")
+    print("Employee {} is done with tasks({}/{}):"
+          .format(name, done, len(tasks)))
     for task in done_tasks:
-        print(f"\t{task['title']}")
-
-
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python script_name.py <employee_id>")
-        sys.exit(1)
-
-    employee_id = int(sys.argv[1])
-    fetch_todo_list_progress(employee_id)
+        print("\t {}".format(task.get('title')))
