@@ -7,16 +7,15 @@ from sys import argv
 
 if __name__ == '__main__':
     USER_ID = argv[1]
-    url = f"https://jsonplaceholder.typicode.com/users/{USER_ID}"
+    url = 'https://jsonplaceholder.typicode.com/users/{}'.format(USER_ID)
     response = get(url)
     USERNAME = response.json().get('username')
 
-    url = f"https://jsonplaceholder.typicode.com/users/{USER_ID}/todos"
+    url = 'https://jsonplaceholder.typicode.com/users/{}/todos'.format(USER_ID)
     response = get(url)
     tasks = response.json()
-
-    with open(f"{USER_ID}.csv", 'w') as file:
-        for task in tasks:
+    with open('{}.csv'.format(USER_ID), 'w') as file:
+        for TASK in tasks:
             file.write('"{}","{}","{}","{}"\n'
-                       .format(USER_ID, USERNAME, task['completed']),
-                       task['title'])
+                       .format(USER_ID, USERNAME, TASK.get('completed'),
+                               TASK.get('title')))
