@@ -1,5 +1,8 @@
 #!/usr/bin/python3
-"""Gather data from an API"""
+"""
+Gather data from an API
+"""
+
 from requests import get
 import sys
 
@@ -14,12 +17,16 @@ def fetch_todo_list_progress(employee_id):
     tasks = task_res.json()
 
     total_tasks = len(tasks)
-    done_tasks = sum(task['completed'] for task in tasks)
+    done_tasks = []
+    done = 0
+    for task in tasks:
+        if task.get('completed'):
+            done_tasks.append(task)
+            done += 1
 
     print(f"Employee {name} is done with tasks ({done_tasks}/{total_tasks}):")
-    for task in tasks:
-        if task['completed']:
-            print(f"\t{task['title']}")
+    for task in done_tasks:
+        print(f"\t{task['title']}")
 
 
 if __name__ == "__main__":
