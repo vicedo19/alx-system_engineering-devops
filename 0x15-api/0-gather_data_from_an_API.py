@@ -2,8 +2,8 @@
 """
 Gather data from an API
 """
-import sys
 from requests import get
+import sys
 
 
 def fetch_todo_list_progress(employee_id):
