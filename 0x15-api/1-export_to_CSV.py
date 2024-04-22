@@ -1,32 +1,22 @@
 #!/usr/bin/python3
-"""
-Gather data from an API and export it to a CSV file
-"""
+"""Extend you Python script to csv format"""
 import csv
 from requests import get
 from sys import argv
 
 
-def fetch_and_export_tasks(user_id):
-    url = 'https://jsonplaceholder.typicode.com/users/{}'.format(user_id)
+if __name__ == '__main__':
+    USER_ID = argv[1]
+    url = f"https://jsonplaceholder.typicode.com/users/{USER_ID}"
     response = get(url)
-    name = response.json().get('name')
+    USERNAME = response.json().get('username')
 
-    url = 'https://jsonplaceholder.typicode.com/users/{}/todos'.format(user_id)
+    url = f"https://jsonplaceholder.typicode.com/users/{USER_ID}/todos"
     response = get(url)
     tasks = response.json()
 
-    done_tasks = []
-    for task in tasks:
-        if task['completed']:
-            done_tasks.append(task)
-
-    with open({user_id}.csv, mode='w', newline='') as file:
-        writer = csv.writer(file)
-        for task in done_tasks:
-            writer.writerow([user_id, name, task['completed'], task['title']])
-
-
-if __name__ == '__main__':
-    user_id = argv[1]
-    fetch_and_export_tasks(user_id)
+    with open(f"{USER_ID}.csv", 'w') as file:
+        for task in tasks:
+            file.write('"{}","{}","{}","{}"\n'
+                       .format(USER_ID, USERNAME, task['completed']),
+                       task['title'])
